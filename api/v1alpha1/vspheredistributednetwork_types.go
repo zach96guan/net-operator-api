@@ -136,8 +136,7 @@ const (
 // MacLearningPolicy represents the MAC learning policy configuration.
 type MacLearningPolicy struct {
 	// Enabled indicates whether MAC learning is enabled.
-	// +optional
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled bool `json:"enabled,omitempty"`
 
 	// AllowUnicastFlooding indicates whether to allow flooding of unlearned MAC for ingress traffic.
 	// +optional
@@ -154,7 +153,8 @@ type MacLearningPolicy struct {
 
 // MacManagementPolicy represents the MAC management policy configuration.
 type MacManagementPolicy struct {
-	// AllowPromiscuous indicates whether promiscuous mode is enabled. Determines whether or not all traffic is seen on the port.
+	// AllowPromiscuous indicates whether promiscuous mode is enabled. Determines whether or not all
+	// traffic is seen on the port.
 	// +optional
 	AllowPromiscuous *bool `json:"allowPromiscuous,omitempty"`
 
@@ -162,7 +162,8 @@ type MacManagementPolicy struct {
 	// +optional
 	MacChanges *bool `json:"macChanges,omitempty"`
 
-	// ForgedTransmits indicates whether or not the virtual network adapter should be allowed to send network traffic with a different MAC address than the one assigned to it.
+	// ForgedTransmits indicates whether or not the virtual network adapter should be allowed to send
+	// network traffic with a different MAC address than the one assigned to it.
 	// +optional
 	ForgedTransmits *bool `json:"forgedTransmits,omitempty"`
 
