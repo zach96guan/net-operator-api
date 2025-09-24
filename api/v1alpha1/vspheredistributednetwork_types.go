@@ -115,8 +115,7 @@ type VlanSpec struct {
 	// +optional
 	// +kubebuilder:validation:Minimum=0
 	// +kubebuilder:validation:Maximum=4094
-	// +kubebuilder:default=0
-	VlanID int32 `json:"vlanID,omitempty"`
+	VlanID *int32 `json:"vlanID,omitempty"`
 
 	// TrunkRange specifies the ranges of allowed VLANs when Type is VLANTypeTrunk.
 	// This field is ignored for other VLAN types.
@@ -128,7 +127,7 @@ type VlanSpec struct {
 	// PrivateVlanID specifies the private VLAN ID when Type is VLANTypePrivate.
 	// This field is ignored for other VLAN types.
 	// +optional
-	PrivateVlanID int32 `json:"privateVlanID,omitempty"`
+	PrivateVlanID *int32 `json:"privateVlanID,omitempty"`
 }
 
 // MacLimitPolicyType represents the policy type to be used when the MAC address limit is exceeded.
@@ -144,24 +143,22 @@ const (
 // MacLearningPolicy represents the MAC learning policy configuration.
 type MacLearningPolicy struct {
 	// Enabled indicates whether MAC learning is enabled.
-	// +kubebuilder:default=false
 	Enabled bool `json:"enabled"`
 
 	// AllowUnicastFlooding indicates whether to allow flooding of unlearned MAC for ingress traffic.
 	// +optional
-	// +kubebuilder:default=false
-	AllowUnicastFlooding bool `json:"allowUnicastFlooding,omitempty"`
+	AllowUnicastFlooding *bool `json:"allowUnicastFlooding,omitempty"`
 
 	// Limit represents the maximum number of MAC addresses that can be learned.
 	// +optional
 	// +kubebuilder:validation:Minimum=0
 	// +kubebuilder:validation:Maximum=4096
-	Limit int32 `json:"limit,omitempty"`
+	Limit *int32 `json:"limit,omitempty"`
 
 	// LimitPolicy represents the policy to be used when the limit is exceeded.
 	// +optional
 	// +kubebuilder:validation:Enum=allow;drop
-	LimitPolicy MacLimitPolicyType `json:"limitPolicy,omitempty"`
+	LimitPolicy *MacLimitPolicyType `json:"limitPolicy,omitempty"`
 }
 
 // MacManagementPolicy represents the MAC management policy configuration,
@@ -169,22 +166,21 @@ type MacManagementPolicy struct {
 	// AllowPromiscuous indicates whether promiscuous mode is enabled. Determines whether or not all
 	// traffic is seen on the port.
 	// +optional
-	// +kubebuilder:default=false
-	AllowPromiscuous bool `json:"allowPromiscuous,omitempty"`
+	AllowPromiscuous *bool `json:"allowPromiscuous,omitempty"`
 
 	// MacChanges indicates whether MAC address changes can be changed.
 	// MacChanges specifies whether virtual machines can receive frames with a Mac Address that is different from the one configured in the VMX.
 	// +optional
-	MacChanges bool `json:"macChanges,omitempty"`
+	MacChanges *bool `json:"macChanges,omitempty"`
 
 	// ForgedTransmits indicates whether or not the virtual network adapter should be allowed to send
 	// network traffic with a different MAC address than the one assigned to it.
 	// +optional
-	ForgedTransmits bool `json:"forgedTransmits,omitempty"`
+	ForgedTransmits *bool `json:"forgedTransmits,omitempty"`
 
 	// MacLearningPolicy represents the MAC learning policy configuration.
 	// +optional
-	MacLearningPolicy MacLearningPolicy `json:"macLearningPolicy,omitempty"`
+	MacLearningPolicy *MacLearningPolicy `json:"macLearningPolicy,omitempty"`
 }
 
 // VSphereDistributedPortConfig represents the port-level configuration for a vSphere Distributed Network
@@ -192,12 +188,12 @@ type VSphereDistributedPortConfig struct {
 	// Vlan represents the VLAN configuration for this port.
 	// If unset, indicates that no VLAN configuration has been retrieved yet for this port.
 	// +optional
-	Vlan VlanSpec `json:"vlan,omitempty"`
+	Vlan *VlanSpec `json:"vlan,omitempty"`
 
 	// MacManagementPolicy represents the MAC management policy configuration for this port.
 	// If unset, indicates that no MAC management policy has been retrieved yet for this port.
 	// +optional
-	MacManagementPolicy MacManagementPolicy `json:"macManagementPolicy,omitempty"`
+	MacManagementPolicy *MacManagementPolicy `json:"macManagementPolicy,omitempty"`
 }
 
 // VSphereDistributedNetworkStatus defines the observed state of VSphereDistributedNetwork.
