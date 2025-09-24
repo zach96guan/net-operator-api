@@ -168,7 +168,6 @@ type MacManagementPolicy struct {
 	// +optional
 	AllowPromiscuous *bool `json:"allowPromiscuous,omitempty"`
 
-	// MacChanges indicates whether MAC address changes can be changed.
 	// MacChanges specifies whether virtual machines can receive frames with a Mac Address that is different from the one configured in the VMX.
 	// +optional
 	MacChanges *bool `json:"macChanges,omitempty"`
