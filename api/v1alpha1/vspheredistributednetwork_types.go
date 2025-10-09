@@ -182,15 +182,13 @@ type MacManagementPolicy struct {
 	MacLearningPolicy *MacLearningPolicy `json:"macLearningPolicy,omitempty"`
 }
 
-// VSphereDistributedPortConfig represents the port-level configuration for a vSphere Distributed Network
+// VSphereDistributedPortConfig represents the port-level configuration for a vSphere Distributed Network's ports.
 type VSphereDistributedPortConfig struct {
-	// Vlan represents the VLAN configuration for this port.
-	// If unset, indicates that no VLAN configuration has been retrieved yet for this port.
+	// Vlan represents the VLAN configuration.
 	// +optional
 	Vlan *VlanSpec `json:"vlan,omitempty"`
 
-	// MacManagementPolicy represents the MAC management policy configuration for this port.
-	// If unset, indicates that no MAC management policy has been retrieved yet for this port.
+	// MacManagementPolicy represents the MAC management policy configuration.
 	// +optional
 	MacManagementPolicy *MacManagementPolicy `json:"macManagementPolicy,omitempty"`
 }
@@ -202,6 +200,7 @@ type VSphereDistributedNetworkStatus struct {
 
 	// DefaultPortConfig represents the default port-level configuration that applies to all ports
 	// unless overridden at the individual port level.
+	// If unset, indicates that no default port-level configuration has been retrieved yet for this network.
 	// +optional
 	DefaultPortConfig *VSphereDistributedPortConfig `json:"defaultPortConfig,omitempty"`
 }
