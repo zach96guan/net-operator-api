@@ -161,7 +161,7 @@ type MacLearningPolicy struct {
 	LimitPolicy *MacLimitPolicyType `json:"limitPolicy,omitempty"`
 }
 
-// MacManagementPolicy represents the MAC management policy configuration,
+// MacManagementPolicy represents the MAC management policy configuration.
 type MacManagementPolicy struct {
 	// AllowPromiscuous indicates whether promiscuous mode is enabled. Determines whether or not all
 	// traffic is seen on the port.
