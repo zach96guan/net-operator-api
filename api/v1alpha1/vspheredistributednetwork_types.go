@@ -91,15 +91,20 @@ const (
 // VLANTrunkRange represents a range of VLAN IDs for trunk configuration
 type VLANTrunkRange struct {
 	// Start represents the beginning of the VLAN ID range (inclusive).
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=4094
 	Start int32 `json:"start"`
 
 	// End represents the end of the VLAN ID range (inclusive).
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=4094
 	End int32 `json:"end"`
 }
 
 // VlanSpec represents the VLAN configuration.
 type VlanSpec struct {
 	// Type indicates the type of VLAN configuration (standard, trunk, or private).
+	// +kubebuilder:validation:Enum=standard;trunk;private
 	Type VLANType `json:"type"`
 
 	// VlanID specifies the VLAN ID when Type is VLANTypeStandard.
@@ -108,6 +113,8 @@ type VlanSpec struct {
 	// - A value of 0 indicates there is no VLAN configuration for the port.
 	// - A value from 1 to 4094 specifies a VLAN ID for the port.
 	// +optional
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=4094
 	VlanID *int32 `json:"vlanID,omitempty"`
 
 	// TrunkRange specifies the ranges of allowed VLANs when Type is VLANTypeTrunk.
@@ -123,12 +130,67 @@ type VlanSpec struct {
 	PrivateVlanID *int32 `json:"privateVlanID,omitempty"`
 }
 
-// VSphereDistributedPortConfig represents the port-level configuration for a vSphere Distributed Network
+// MacLimitPolicyType represents the policy type to be used when the MAC address limit is exceeded.
+type MacLimitPolicyType string
+
+const (
+	// MacLimitPolicyAllow indicates that new MAC addresses should still be allowed when the limit is exceeded.
+	MacLimitPolicyAllow MacLimitPolicyType = "allow"
+	// MacLimitPolicyDrop indicates that new MAC addresses should be dropped when the limit is exceeded.
+	MacLimitPolicyDrop MacLimitPolicyType = "drop"
+)
+
+// MacLearningPolicy represents the MAC learning policy configuration.
+type MacLearningPolicy struct {
+	// Enabled indicates whether MAC learning is enabled.
+	Enabled bool `json:"enabled"`
+
+	// AllowUnicastFlooding indicates whether to allow flooding of unlearned MAC for ingress traffic.
+	// +optional
+	AllowUnicastFlooding *bool `json:"allowUnicastFlooding,omitempty"`
+
+	// Limit represents the maximum number of MAC addresses that can be learned.
+	// +optional
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=4096
+	Limit *int32 `json:"limit,omitempty"`
+
+	// LimitPolicy represents the policy to be used when the limit is exceeded.
+	// +optional
+	// +kubebuilder:validation:Enum=allow;drop
+	LimitPolicy *MacLimitPolicyType `json:"limitPolicy,omitempty"`
+}
+
+// MacManagementPolicy represents the MAC management policy configuration.
+type MacManagementPolicy struct {
+	// AllowPromiscuous indicates whether promiscuous mode is enabled. Determines whether or not all
+	// traffic is seen on the port.
+	// +optional
+	AllowPromiscuous *bool `json:"allowPromiscuous,omitempty"`
+
+	// MacChanges specifies whether virtual machines can receive frames with a Mac Address that is different from the one configured in the VMX.
+	// +optional
+	MacChanges *bool `json:"macChanges,omitempty"`
+
+	// ForgedTransmits indicates whether or not the virtual network adapter should be allowed to send
+	// network traffic with a different MAC address than the one assigned to it.
+	// +optional
+	ForgedTransmits *bool `json:"forgedTransmits,omitempty"`
+
+	// MacLearningPolicy represents the MAC learning policy configuration.
+	// +optional
+	MacLearningPolicy *MacLearningPolicy `json:"macLearningPolicy,omitempty"`
+}
+
+// VSphereDistributedPortConfig represents the port-level configuration for a vSphere Distributed Network's ports.
 type VSphereDistributedPortConfig struct {
-	// Vlan represents the VLAN configuration for this port.
-	// If unset, indicates that no VLAN configuration has been retrieved yet for this port.
+	// Vlan represents the VLAN configuration.
 	// +optional
 	Vlan *VlanSpec `json:"vlan,omitempty"`
+
+	// MacManagementPolicy represents the MAC management policy configuration.
+	// +optional
+	MacManagementPolicy *MacManagementPolicy `json:"macManagementPolicy,omitempty"`
 }
 
 // VSphereDistributedNetworkStatus defines the observed state of VSphereDistributedNetwork.
@@ -138,6 +200,7 @@ type VSphereDistributedNetworkStatus struct {
 
 	// DefaultPortConfig represents the default port-level configuration that applies to all ports
 	// unless overridden at the individual port level.
+	// If unset, indicates that no default port-level configuration has been retrieved yet for this network.
 	// +optional
 	DefaultPortConfig *VSphereDistributedPortConfig `json:"defaultPortConfig,omitempty"`
 }
