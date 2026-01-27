@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Broadcom. All Rights Reserved.
+// Copyright (c) 2024-2026 Broadcom. All Rights Reserved.
 // Broadcom Confidential. The term "Broadcom" refers to Broadcom Inc.
 // and/or its subsidiaries.
 
@@ -70,7 +70,7 @@ type FoundationLoadBalancerDeploymentSpec struct {
 
 	// SingleNodeAvailabilityMode deploys a single node to serve load balancer traffic. If the node
 	// fails, the service will attempt to redeploy it, but redeployment is best-effort and depends on
-	// the health of the underlying infrastructure. You must select
+	// the health of the underlying infrastructure.
 	//
 	// +optional
 	SingleNodeAvailabilityMode *SingleNodeAvailabilityMode `json:"singleNodeSpec,omitempty"`
@@ -136,6 +136,12 @@ type FoundationLoadBalancerConfigStatus struct {
 	//
 	// +optional
 	VirtualServerIPPoolsUtilization VirtualIPPoolsUtilization `json:"virtualServerIPPoolsUtilization,omitempty"`
+
+	// TokenDigest represents a hash of the current token in JWT format used for authentication with
+	// the load balancer controller.
+	//
+	// +optional
+	TokenDigest string `json:"tokenDigest,omitempty"`
 
 	// Conditions describes states of the load balancer at specific points in time.
 	//
